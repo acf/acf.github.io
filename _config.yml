@@ -28,7 +28,7 @@ url: "https://alancfrancis.com/" # the base hostname & protocol for your site, e
 github_username:  acf
 
 # Build settings
-theme: jekyll-theme-cayman
+theme: cayman
 plugins:
   - jekyll-remote-theme
   - jekyll-feed
