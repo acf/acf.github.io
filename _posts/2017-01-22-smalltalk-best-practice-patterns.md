@@ -25,9 +25,9 @@ In the 1990s the "patterns" movement in software was in full flight. The poster 
 
 But software patterns come in all different shapes and sizes and one of the people instrumental in the movement towards utilising the notion of describing software with patterns was Kent Beck. Kent is involved with many of the most important (IMO) ideas in software over the last 20 years, including object-orientation through Smalltalk, Test-Driven Development, Refactoring and our subject here - Patterns,.
 
-**![unknown]({{ site.baseurl }}/assets/2017/01/unknown.jpeg)
+![unknown]({{ site.baseurl }}/assets/2017/01/unknown.jpeg)
 
-[Smalltalk Best Practice Patterns](https://www.amazon.co.uk/Smalltalk-Best-Practice-Patterns-Kent/dp/013476904X/)** is a collection of tiny, very specific patterns describing how Kent wrote Smalltalk. I've heard Kent describe how the book was written once, and I've tried and failed to find a reference.
+**[Smalltalk Best Practice Patterns](https://www.amazon.co.uk/Smalltalk-Best-Practice-Patterns-Kent/dp/013476904X/)** is a collection of tiny, very specific patterns describing how Kent wrote Smalltalk. I've heard Kent describe how the book was written once, and I've tried and failed to find a reference.
 
 In essence, when he start to write a line of code, he looked to see if he had a pattern describing what he was about to do. If yes, he used it, if no, he amended an existing one or wrote a new one. The result is a reasonably complete specification describing the choices available to him in writing each and every line of code in a program, from variable naming to inheritance hierarchies.
 
