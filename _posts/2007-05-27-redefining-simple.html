@@ -26,6 +26,7 @@ permalink: "/2007/05/27/redefining-simple/"
 <li>Contains no duplication</li>
 <li>Has the fewest possible number of classes and methods</li>
 </ol>
+
 <p>It's probably worth discussing each of these in turn.</p>
 <p>First off, we're not done if the code doesn't pass our tests. Since we're Extreme Programmers, we code <em>test-first</em>, and have a suite of unit tests for any particular piece of code we're about to check in. If we can't get here, we shouldn't even bother looking at numbers 2-4.</p>
 <p>Secondly, communication. This is somewhat subjective, but in essence we're looking for <em>good names</em> for methods and variables. Descriptive, and in keeping with any system of named we have in place. Perhaps all our controllers are called <span class="code">XXXController</span>, perhaps the return variable from any method is always called <span class="code">result</span>. The other thing I think is important here is reasonably short methods.</p>
@@ -35,7 +36,9 @@ permalink: "/2007/05/27/redefining-simple/"
 <p>But it's only one definition. Over time I've run a few experiments, trying out different 'rules'. Seeing what happens to code if they're followed religiously. One that I want to talk about here is named for it's Java implementation : No braces.</p>
 <p>What would happen if the only braces we allowed in our Java source was to scope classes and methods. What would the code look like ?</p>
 <p>Here's a simple little example, somewhat adapted from Martin Fowlers canonical Refactoring example.</p>
-<p>[code language="java"]<br />
+
+<pre>
+  <code class="java">
 public void statement( RentalList rentals, User user,<br />
 PrintWriter output, boolean headerRequired )<br />
 {<br />
@@ -62,9 +65,13 @@ output.println( "====================================" );<br />
 output.println( "Total Points: " + totaPoints );<br />
 output.println( "====================================" );<br />
 }</p>
-<p>[/code]<br />
+  </code>
+</pre>
+
 Here's what I ended up with following my rule.<br />
-[code language="java"]<br />
+
+<pre>
+  <code class="java">
 public void writeStatement(PrintWriter output, RentalList rentals,<br />
 User user, boolean headerRequired)<br />
 {<br />
@@ -105,8 +112,10 @@ output.println( "====================================" );<br />
 if( rental.earnsPoints() )<br />
 output.println( "Points: " + rental.getPoints() );<br />
 }<br />
-[/code]<br />
-There are, overall more lines of code, but what we end up with is interesting in a few ways.</p>
+  </code>
+</pre>
+
+<p>There are, overall more lines of code, but what we end up with is interesting in a few ways.</p>
 <p>The first interesting thing, I think, is the method length. A lot of <em>very</em> small methods, none really over 2 or 3 lines long. Each method does exactly one thing. It's a decision, a loop or a small set of sequential steps bundled into a 'job'.</p>
 <p>The second interesting thing is that those 'job' methods are written at the same level of abstraction. We don't see <span class="code">writeHeader()</span> followed by all the guts of writing the body. Instead we see header, body, footer.</p>
 <p>The third interesting thing is that we've eliminated all <em>temporary variables</em>. A useful side effect is that it becomes much more apparent when methods can or should be moved between objects. The total points in the above example seems like it needed moved to the <span class="code">RentalList</span>. One more temporary variable eliminated.</p>
