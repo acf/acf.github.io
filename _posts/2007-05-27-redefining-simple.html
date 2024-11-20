@@ -1,0 +1,124 @@
+---
+layout: post
+title: Redefining Simple
+date: 2007-05-27 22:06:05.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- design
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '1044099662'
+author:
+  login: alancfrancis
+  email: acf+wordpress@alancfrancis.com
+  display_name: alancfrancis
+  first_name: Alan
+  last_name: Francis
+permalink: "/2007/05/27/redefining-simple/"
+---
+<p>One of the main tenets of <em>Extreme Programming</em> is that we should strive to produce 'simple code'. Sometimes code is written simply from the outset, other times code needs to be refactored until it is simple. In either case, it's necessary to have a working definition of simple to code or refactor to.</p>
+<p>Luckily, XP provides us with a definition.</p>
+<p>'Simple Code' meets the following criteria (this is an ordered list).</p>
+<ol>
+<li>Passes all the tests</li>
+<li>Communicates it's intent</li>
+<li>Contains no duplication</li>
+<li>Has the fewest possible number of classes and methods</li>
+</ol>
+<p>It's probably worth discussing each of these in turn.</p>
+<p>First off, we're not done if the code doesn't pass our tests. Since we're Extreme Programmers, we code <em>test-first</em>, and have a suite of unit tests for any particular piece of code we're about to check in. If we can't get here, we shouldn't even bother looking at numbers 2-4.</p>
+<p>Secondly, communication. This is somewhat subjective, but in essence we're looking for <em>good names</em> for methods and variables. Descriptive, and in keeping with any system of named we have in place. Perhaps all our controllers are called <span class="code">XXXController</span>, perhaps the return variable from any method is always called <span class="code">result</span>. The other thing I think is important here is reasonably short methods.</p>
+<p>Number 3, like our first item seems pretty black and white. Either there's duplication or there isn't, right ? But discussing the different kinds of duplication is a whole other article. We're looking for both straight <em>textual</em> duplication, but also <em>duplication of intent</em>. Duplication is a bad smell in our code and it's important that we stamp it out whenever we can.</p>
+<p>The last item in the list is almost an tiebreaker. Given two different approaches that meet the first 3 criteria, choose the one with the least amount of code. It's an <strong>ordered list</strong>, so communication trumps size here.</p>
+<p>Now, this (I think) is a pretty decent working definition. It has some fairly concrete guidelines (not rules) to code against and I do like the results I get when I work consciously with them.</p>
+<p>But it's only one definition. Over time I've run a few experiments, trying out different 'rules'. Seeing what happens to code if they're followed religiously. One that I want to talk about here is named for it's Java implementation : No braces.</p>
+<p>What would happen if the only braces we allowed in our Java source was to scope classes and methods. What would the code look like ?</p>
+<p>Here's a simple little example, somewhat adapted from Martin Fowlers canonical Refactoring example.</p>
+<p>[code language="java"]<br />
+public void statement( RentalList rentals, User user,<br />
+PrintWriter output, boolean headerRequired )<br />
+{<br />
+if( headerRequired )<br />
+{<br />
+output.println( "========== STATEMENT ===============" );<br />
+output.println( " Username: " + user.getName() );<br />
+output.println( " Date: " + new Date().toString() );<br />
+output.println( "====================================" );<br />
+}<br />
+while( Iterator i = rentals.iterator(); i.hasNext() )<br />
+{<br />
+Rental r = (Rental)i.next();<br />
+output.println( "Title:  " + r.getTitle() );<br />
+output.println( "On:     " + r.getRentDate() );<br />
+output.println( "Cost:   " + r.getPrice() );<br />
+if( r.earnsPoints() )<br />
+{<br />
+output.println( "Points: " + r.getPoints() );<br />
+totalPoints += r.getPoints();<br />
+}<br />
+}<br />
+output.println( "====================================" );<br />
+output.println( "Total Points: " + totaPoints );<br />
+output.println( "====================================" );<br />
+}</p>
+<p>[/code]<br />
+Here's what I ended up with following my rule.<br />
+[code language="java"]<br />
+public void writeStatement(PrintWriter output, RentalList rentals,<br />
+User user, boolean headerRequired)<br />
+{<br />
+writeHeaderIfNecessary( output, user, headerRequired );<br />
+writeRentals( output, rentals );<br />
+writeFooter( output, rentals );<br />
+}</p>
+<p>private void writeStatementHeaderIfNecessary(  PrintWriter output, User user  )<br />
+{<br />
+if( headerRequired )<br />
+writeHeader( output, user )<br />
+}</p>
+<p>private void writeHeader( PrintWriter output, User user )<br />
+{<br />
+output.println( "========== STATEMENT ===============" );<br />
+output.println( " Username: " + user.getName() );<br />
+output.println( " Date: " + new Date().toString() );<br />
+output.println( "====================================" );<br />
+}</p>
+<p>private void writeRentals( PrintWriter output, RentalList rentals )<br />
+{<br />
+while( Iterator i = rentals.iterator(); i.hasNext() )<br />
+writeRental( (Rental)i.next() );<br />
+}</p>
+<p>private void writeRental( PrintWriter output, RentalList rental )<br />
+{<br />
+writeRentalDetails( output, rental );<br />
+writePointsIfNecessary( output, rental );<br />
+}</p>
+<p>private void writeFooter( PrintWriter output, RentalList rentals )<br />
+{<br />
+output.println( "====================================" );<br />
+output.println( "Total Points: " + rentals.getTotalPoints() );<br />
+output.println( "====================================" );<br />
+}</p>
+<p>private void writePointsIfNecessary( PrintWriter output, Rental rental )<br />
+{<br />
+if( rental.earnsPoints() )<br />
+output.println( "Points: " + rental.getPoints() );<br />
+}<br />
+[/code]<br />
+There are, overall more lines of code, but what we end up with is interesting in a few ways.</p>
+<p>The first interesting thing, I think, is the method length. A lot of <em>very</em> small methods, none really over 2 or 3 lines long. Each method does exactly one thing. It's a decision, a loop or a small set of sequential steps bundled into a 'job'.</p>
+<p>The second interesting thing is that those 'job' methods are written at the same level of abstraction. We don't see <span class="code">writeHeader()</span> followed by all the guts of writing the body. Instead we see header, body, footer.</p>
+<p>The third interesting thing is that we've eliminated all <em>temporary variables</em>. A useful side effect is that it becomes much more apparent when methods can or should be moved between objects. The total points in the above example seems like it needed moved to the <span class="code">RentalList</span>. One more temporary variable eliminated.</p>
+<p>Now, there's obviously a few criticisms to be levelled at code like this. Where's the work done? Why do I have click all over the place to figure out the flow of the application? I've heard it described as <em>'ravioli code'</em> (as opposed to spaghetti). Interestingly, large chunks of Smalltalk are written like this. It's quite a common coding style in dynamic languages, although the loop method calling a singular method would most likely be done with a block.</p>
+<p>The advantages, however all depend on good names for the methods in question. With good names, someone reading the code shouldn't have descend the method hierarchy very far to get the answers they seek.</p>
+<p>If we're interested in something in the statement footer, we can click into <span class="code">writeStatementTo()</span> and into <span class="code">writeFooterTo()</span> we don't need to be bothered with all the implementation detail of the header and body. It's not relevant except to understand that they are printed before the footer. Or inside the <span class="code">writeHeaderIfNecessaryTo()</span> we can see a decision is made on whether to print the header. If all we care about right now is how that decision is made, and not the actual printing we can see that clearly.</p>
+<p>One of the design techniques I was taught in college was Jackson Structured Programming. This was focussed mostly on COBOL, and it's strategy was to turn a Data Definition into a Program Definition. The diagrams for these definitions were box-and-arrow style, with boxes representing <strong>SEQUENCE</strong>, <strong>SELECTION</strong> and <strong>ITERATION</strong>. Sound familiar?</p>
+<p>I like this code style. I know it's a bit extreme, but I'm an extreme programmer so that doesn't frighten me. It makes my code really, really simple and obvious. Each piece laid out in terms of others. Iteration or Selection logic separate from what happens based on that logic.</p>
+<p>Extreme Programming is based on turning the dials up to 10 on a lot of practices and then dialling down only where appropriate, so I like the idea of challenging myself by trying a coding style all the way. I'm almost certainly not going to write all my production code that way, as sometimes code gets seriously contorted to meet the 'rule', but it's a useful exercise.</p>
+<p>Perhaps you have your own ideas of what <strong>simple</strong> might mean? What would happen if you tried to put those ideas into practice ? What would happen if you tried to completely eliminate all temporary variables? Or set a hard limit on method length of, say, 5 lines? Try it. You may not want to code like that all the time, but I guarantee you'll learn something about your code and maybe even yourself.</p>

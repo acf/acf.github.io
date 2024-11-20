@@ -1,0 +1,26 @@
+---
+layout: post
+title: All this has happened before
+date: 
+type: post
+parent_id: '0'
+published: false
+password: ''
+status: draft
+categories: []
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+author:
+  login: alancfrancis
+  email: acf+wordpress@alancfrancis.com
+  display_name: alancfrancis
+  first_name: Alan
+  last_name: Francis
+permalink: "/"
+---
+<p>A link showed up on the much loved iosdevweekly this week. &nbsp;It pointed to an article with an interesting idea about passing dependencies into swift &nbsp;classes and structs using an extension. &nbsp;So far so good. &nbsp;What caught my eyes, however was the intro paragraph which described this technique, "Dependency Injection", as a new and exciting thing sweeping the iOS community.</p>
+<p>I sigh. &nbsp;I'm an old man, it's in the job description to roll my eyes and talk about the old days, but this name was coined back in 2004 by Martin Fowler, and even then it seemed too simple a notion to have a fancy name. &nbsp;Like many of the techniques that Martin has named, they were around a long time before they were named, and naming is useful. &nbsp;It lets us talk &nbsp;about a thing without describing it, but "dependency injection" and "inversion of control" from which it sprang have particular history for me.</p>
+<p>The one and only performance appraisal I received at ThoughtWorks criticised me heavily for "not keeping up on the latest technology". &nbsp;The evidence for this was that I'd never heard of "inversion of control". &nbsp;After the appraisal I went to talk to my friend Paul Hammant, who as involved in a variety of DI container projects like PicoContainer to ask him to explain what this was all about. &nbsp;The answer, it seemed, was constructor arguments. &nbsp;Instead of building your dependencies yourself, you pass them in via a contstrucor, or if that's not possible, a property setter. &nbsp;</p>
+<p>This is not a fancy new concept. &nbsp;This is good design. &nbsp;This is thinking about your interfaces and how to make them testable.</p>
+<p>What was new is the idea of a framework that lets you glue larger dependency networks together automatically by constructing the objects and passing their dependencies in as required. &nbsp;This never seemed like a good idea to me anyway. &nbsp;Too much magic, handing that specification iver to an XML file instead of building pieces in code. &nbsp;If there are too many dependencies to do that tricky in code, that's a clue that there are too many dependencies, not an excuse to offload all that complexity into an external file you don't look at until something breaks.</p>
