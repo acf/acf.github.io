@@ -39,32 +39,33 @@ permalink: "/2007/05/27/redefining-simple/"
 
 <pre>
   <code class="java">
-public void statement( RentalList rentals, User user,<br />
-PrintWriter output, boolean headerRequired )<br />
-{<br />
-if( headerRequired )<br />
-{<br />
-output.println( "========== STATEMENT ===============" );<br />
-output.println( " Username: " + user.getName() );<br />
-output.println( " Date: " + new Date().toString() );<br />
-output.println( "====================================" );<br />
-}<br />
-while( Iterator i = rentals.iterator(); i.hasNext() )<br />
-{<br />
-Rental r = (Rental)i.next();<br />
-output.println( "Title:  " + r.getTitle() );<br />
-output.println( "On:     " + r.getRentDate() );<br />
-output.println( "Cost:   " + r.getPrice() );<br />
-if( r.earnsPoints() )<br />
-{<br />
-output.println( "Points: " + r.getPoints() );<br />
-totalPoints += r.getPoints();<br />
-}<br />
-}<br />
-output.println( "====================================" );<br />
-output.println( "Total Points: " + totaPoints );<br />
-output.println( "====================================" );<br />
-}</p>
+public void statement( RentalList rentals, User user, PrintWriter output, boolean headerRequired )
+{
+	if( headerRequired )
+	{
+		output.println( "========== STATEMENT ===============" );
+		output.println( " Username: " + user.getName() );
+		output.println( " Date: " + new Date().toString() );
+		output.println( "====================================" );
+	}
+
+	while( Iterator i = rentals.iterator(); i.hasNext() )
+	{
+		Rental r = (Rental)i.next();
+		output.println( "Title:  " + r.getTitle() );
+		output.println( "On:     " + r.getRentDate() );
+		output.println( "Cost:   " + r.getPrice() );
+		if( r.earnsPoints() )
+		{
+			output.println( "Points: " + r.getPoints() );
+			totalPoints += r.getPoints();
+		}
+	}
+
+	output.println( "====================================" );
+	output.println( "Total Points: " + totaPoints );
+	output.println( "====================================" );
+}
   </code>
 </pre>
 
@@ -72,46 +73,51 @@ Here's what I ended up with following my rule.<br />
 
 <pre>
   <code class="java">
-public void writeStatement(PrintWriter output, RentalList rentals,<br />
-User user, boolean headerRequired)<br />
-{<br />
-writeHeaderIfNecessary( output, user, headerRequired );<br />
-writeRentals( output, rentals );<br />
-writeFooter( output, rentals );<br />
-}</p>
-<p>private void writeStatementHeaderIfNecessary(  PrintWriter output, User user  )<br />
-{<br />
-if( headerRequired )<br />
-writeHeader( output, user )<br />
-}</p>
-<p>private void writeHeader( PrintWriter output, User user )<br />
-{<br />
-output.println( "========== STATEMENT ===============" );<br />
-output.println( " Username: " + user.getName() );<br />
-output.println( " Date: " + new Date().toString() );<br />
-output.println( "====================================" );<br />
-}</p>
-<p>private void writeRentals( PrintWriter output, RentalList rentals )<br />
-{<br />
-while( Iterator i = rentals.iterator(); i.hasNext() )<br />
-writeRental( (Rental)i.next() );<br />
-}</p>
-<p>private void writeRental( PrintWriter output, RentalList rental )<br />
-{<br />
-writeRentalDetails( output, rental );<br />
-writePointsIfNecessary( output, rental );<br />
-}</p>
-<p>private void writeFooter( PrintWriter output, RentalList rentals )<br />
-{<br />
-output.println( "====================================" );<br />
-output.println( "Total Points: " + rentals.getTotalPoints() );<br />
-output.println( "====================================" );<br />
-}</p>
-<p>private void writePointsIfNecessary( PrintWriter output, Rental rental )<br />
-{<br />
-if( rental.earnsPoints() )<br />
-output.println( "Points: " + rental.getPoints() );<br />
-}<br />
+public void writeStatement(PrintWriter output, RentalList rentals, User user, boolean headerRequired)<br />
+{
+	writeHeaderIfNecessary( output, user, headerRequired );
+	writeRentals( output, rentals );
+	writeFooter( output, rentals );
+}
+
+private void writeStatementHeaderIfNecessary(  PrintWriter output, User user  )
+{
+	if( headerRequired )
+		writeHeader( output, user )
+}
+
+private void writeHeader( PrintWriter output, User user )
+{
+	output.println( "========== STATEMENT ===============" );
+	output.println( " Username: " + user.getName() );
+	output.println( " Date: " + new Date().toString() );
+	output.println( "====================================" );
+}
+
+private void writeRentals( PrintWriter output, RentalList rentals )
+{
+	while( Iterator i = rentals.iterator(); i.hasNext() )
+		writeRental( (Rental)i.next() );
+}
+
+private void writeRental( PrintWriter output, RentalList rental )
+{
+	writeRentalDetails( output, rental );
+	writePointsIfNecessary( output, rental );
+}
+
+private void writeFooter( PrintWriter output, RentalList rentals )
+{
+	output.println( "====================================" );
+	output.println( "Total Points: " + rentals.getTotalPoints() );
+	output.println( "====================================" );
+}
+
+private void writePointsIfNecessary( PrintWriter output, Rental rental )
+{
+	if( rental.earnsPoints() )
+		output.println( "Points: " + rental.getPoints() );
+}
   </code>
 </pre>
 
