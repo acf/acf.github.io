@@ -37,8 +37,7 @@ permalink: "/2007/05/27/redefining-simple/"
 <p>What would happen if the only braces we allowed in our Java source was to scope classes and methods. What would the code look like ?</p>
 <p>Here's a simple little example, somewhat adapted from Martin Fowlers canonical Refactoring example.</p>
 
-<pre>
-  <code class="java">
+{% highlight java %}
 public void statement( RentalList rentals, User user, PrintWriter output, boolean headerRequired )
 {
 	if( headerRequired )
@@ -66,13 +65,12 @@ public void statement( RentalList rentals, User user, PrintWriter output, boolea
 	output.println( "Total Points: " + totaPoints );
 	output.println( "====================================" );
 }
-  </code>
-</pre>
+{% endhighlight %}
+
 
 Here's what I ended up with following my rule.<br />
 
-<pre>
-  <code class="java">
+{% highlight java %}
 public void writeStatement(PrintWriter output, RentalList rentals, User user, boolean headerRequired)<br />
 {
 	writeHeaderIfNecessary( output, user, headerRequired );
@@ -118,8 +116,7 @@ private void writePointsIfNecessary( PrintWriter output, Rental rental )
 	if( rental.earnsPoints() )
 		output.println( "Points: " + rental.getPoints() );
 }
-  </code>
-</pre>
+{% endhighlight %}
 
 <p>There are, overall more lines of code, but what we end up with is interesting in a few ways.</p>
 <p>The first interesting thing, I think, is the method length. A lot of <em>very</em> small methods, none really over 2 or 3 lines long. Each method does exactly one thing. It's a decision, a loop or a small set of sequential steps bundled into a 'job'.</p>
