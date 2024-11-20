@@ -16,5 +16,5 @@ meta:
 author: Alan Francis
 permalink: "/2017/01/24/link-how-designers-destroyed-the-world/"
 ---
-<p>[vimeo 68470326 w=640 h=360]</p>
-<p><a href="https://vimeo.com/68470326">Webstock '13: Mike Monteiro - How Designers Destroyed the World</a></p>
+
+[Webstock '13: Mike Monteiro - How Designers Destroyed the World](https://vimeo.com/68470326)
