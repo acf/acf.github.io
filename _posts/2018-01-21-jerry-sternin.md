@@ -17,5 +17,6 @@ meta:
 author: Alan Francis
 permalink: "/2018/01/21/jerry-sternin/"
 ---
-<blockquote>It's easier to act your way into a new way of thinking, than think your way into a new way of acting.</p></blockquote>
-<p>&nbsp;</p>
+
+> It's easier to act your way into a new way of thinking, than think your way into a new way of acting.
+>   -- Jerry Sternin
