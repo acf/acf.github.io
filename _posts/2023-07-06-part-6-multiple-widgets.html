@@ -1,0 +1,204 @@
+---
+layout: post
+title: 'Part 6: Multiple Widgets'
+date: 2023-07-06 18:14:42.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _publicize_job_id: '85514993509'
+  timeline_notification: '1688667285'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1688667671
+  _thumbnail_id: '2801'
+author: Alan Francis
+permalink: "/2023/07/06/part-6-multiple-widgets/"
+---
+<p><!-- wp:paragraph --></p>
+<p>At the end of the last part I was aware that although the widget worked in all the contexts I care about, it looked a little weird in the .<code>accessoryCircular</code> family, which  appears in certain watch complications and iPhone Lock Screen widgets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In this part I'll add a second type of widget and talk a little about different widget families and contexts.  As usual my focus here is on trying to share as much code as I can and have a single project that supports all the different options in obvious ways.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This section is a lot of moving code around, really, but again it sets us up going forward for more flexible widgets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Divide and Conquer</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>First I'm going to pull apart the <code>JustOneThingWidget</code> file.  I've made a new <code>ThingView.swift</code> file and pulled the <code>ThingView</code> and the <code>ThingEntryView</code> out to it, to leave just the Widget-specific stuff in <code>JustOneThingWidget.swift</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2733,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.00.07.png?w=1024" alt="" class="wp-image-2733" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lets also make a <code>WidgetBundle.swift</code> file and pull the <code>WidgetBundle</code> out to it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2735,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-16.58.53.png?w=1024" alt="" class="wp-image-2735" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That just leaves our <code>JustOneThingWidget</code> struct.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next we're going to rename the file and the struct to <code>SystemThingWidget</code> (and you'll see I added some more descriptive text to the configuration display name and description.  Also, crucially, I've added a <code>.supportedFamilies</code> modifier to specify only the <code>.systemXXX</code> families.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2737,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-17.01.23.png?w=1024" alt="" class="wp-image-2737" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's also a <code>.systemExtraLarge</code> family but it's only on iPad, which I don't much care about.  Having it there would mean more conditional checks so I just ignored it.   Those three are available on iOS and macOS so all good.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The last thing you can see above is that I ended up just deleting <code>ThingEntryView</code> and going straight to <code>ThingView</code>.  The EntryView wasn't really doing anything useful and I didn't need anything from the Entry but the <code>Thing</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next we're going to add a new file and call it <code>AccessoryWidget</code> and copy and paste the whole <code>SystemWidget</code> into it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2760,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-17.09.14-1.png?w=1024" alt="" class="wp-image-2760" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've renamed the struct and changed the <code>configurationDisplayName</code> and <code>description</code> just so we can tell it apart from the <code>SystemWidget</code>.  I've also set the <code>supportedFamilies</code> to the .<code>accessoryXXX</code> options.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now we have two widget types we need to make sure they are both in the <code>WidgetBundle</code>.  This is where things get interesting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2762,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.09.43-1.png?w=1024" alt="" class="wp-image-2762" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Computer Says No</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":2765,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.06.22-1.png?w=546" alt="" class="wp-image-2765" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2766,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.06.32-1.png?w=588" alt="" class="wp-image-2766" /></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>It turns out that (at time of writing) the system families are not supported on the Watch and the accessory families are not supported on the Mac, so we'll need to help Xcode build and package the right things for the right platforms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First we'll see target memberships for the <code>SystemWidget</code> and <code>AccessoryWidget</code> files to only build them for the right platforms.  <code>SystemWidget</code> is <strong>NOT</strong> for the watch and <code>AccessoryWidget</code> is <strong>NOT</strong> for the Mac.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":2768,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.12.27-1.png?w=502" alt="" class="wp-image-2768" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2769,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.12.33-1.png?w=532" alt="" class="wp-image-2769" /></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next, since the two widgets may or may not be available, we'll need to help <code>WidgetBundle</code> out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2772,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.12.14-1.png?w=1024" alt="" class="wp-image-2772" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once again, <code>SystemWidget</code> is NOT for the watch, <code>AccessoryWidget</code> is NOT for the Mac.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At this point everything. should build again and we have two distinct widgets for two different situations, though they both just show our <code>ThingView</code> text.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lets try them out in the various simulators.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">What do we have?</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":2776,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.21.05-1.png?w=760" alt="" class="wp-image-2776" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2777,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.20.20-1.png?w=645" alt="" class="wp-image-2777" /></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the iPhone, we can see the Home Screen is loading the <code>SystemWidget</code> (the <code>displayName</code> is <em>Just One Thing</em>).  If we add a widget to the Lock Screen we can see its using the <code>AccessoryWidget</code> (<code>displayName</code> is <em>One Tiny Thing</em>).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The watch is interesting too.  It's not immediately obvious we're getting the <code>AccessoryWidget</code> because the watch doesn't show the <code>displayName</code> or the <code>description</code>.  Instead its showing the text from the <code>recommendations</code> method on the Provider ("<em>My Intent Widget</em>").</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":2779,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.23.32-1.png?w=484" alt="" class="wp-image-2779" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2781,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.24.46-1.png?w=460" alt="" class="wp-image-2781" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2780,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.23.52-1.png?w=546" alt="" class="wp-image-2780" /></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here we can see the <code>accessoryRectangular</code>, <code>accessoryInline</code> and <code>accessoryCircular</code>.  Rectangular looks just like the <code>SystemWidget</code>, and we could have tried to make the <code>SystemWidget</code> support that family, but we'd have still had to deal with a more complicated situation around the availability of families on platforms.  This way, there are two distinct widgets for different situations, but we know they are just simple wrappers round the <code>ThingView</code>, so even though we don't share the Widget struct itself, there's a single place we can make changes and have them be reflected in both platforms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I notice that they <code>accessoryInline</code> view isn't using my fonts or colours, just simple text.  Not a problem for now, but something to be aware of if we change <code>ThingView</code> to be more complicated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lastly the <code>accessoryCircular</code> is still just a tiny version of the <code>ThingView</code> and we want to change that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'd like to quickly explain the <code>recommendations</code> situation first though.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If we got back to the Provider code and add second recommendation...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2785,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.26.19-1.png?w=1024" alt="" class="wp-image-2785" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then go back to the watch simulator to add a widget...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2787,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.27.06-1.png?w=490" alt="" class="wp-image-2787" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>You can see how the configurations work.  We have one single <code>AccessoryWidget</code> that (in this case) supports the <code>accessoryInline</code> family, but we offer the user two different configurations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If you remember back a few posts ago, I explained that the <code>IntentConfiguration</code> stuff is to provide a way for a widget to be configured on the iPhone or the Mac.  Perhaps we offer a way to change the number of <code>Things</code>, or the colour.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That complex UI is not possible on the watch and so we offer some suggested configurations like "<em>One Thing, Random Colour</em>", "<em>Two Things, Accent Colour</em>" and the watch user can select which prebuilt configuration they want to add.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll ignore this for now and leave the existing single recommendation as we have no configuration system yet. Let's get back to making a slightly nicer circular complication.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Where the <code>SystemWidget</code> just uses a <code>ThingView</code>, the <code>AccessoryWidget</code> now has its own wrapper view, which checks the environment for the <code>widgetFamily</code> and returns something small and simple in the circular case.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2792,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-17.42.13.png?w=1024" alt="" class="wp-image-2792" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I hacked this together the first time I made the circular widget show a total number of <code>Things</code>, but since I haven't built a real <code>DataStore</code> for this yet, I just went with the SFSymbol I've been using as an icon.  Its not winning any awards, and its just a basic launcher rather than glanceable information, but it looks slightly better than the tiny text.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":2793,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-17.42.59.png?w=528" alt="" class="wp-image-2793" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2794,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-15.36.10-2.png?w=554" alt="" class="wp-image-2794" /></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's a wrap for part 6.  The commit is "Part 6: Separate Widgets" </p>
+<p><!-- /wp:paragraph --></p>

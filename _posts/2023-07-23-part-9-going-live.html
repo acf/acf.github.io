@@ -1,0 +1,84 @@
+---
+layout: post
+title: 'Part 9: Going Live'
+date: 2023-07-23 15:01:43.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _thumbnail_id: '3001'
+  wordads_ufa: u:wpcom-ufa-v3-beta:1690128557
+  _publicize_job_id: '85995988093'
+  timeline_notification: '1690124503'
+  _last_editor_used_jetpack: block-editor
+author: Alan Francis
+permalink: "/2023/07/23/part-9-going-live/"
+---
+<p><!-- wp:paragraph --></p>
+<p>So this is the last part of this little series.   In this part I swap in the CoreData/CloudKit store and display random things from there in the widgets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Usual disclaimers apply, this is absolutely not production code, its purely a hacked together experiment to see what I need, don't need, can combine or needs to stay distinct :-)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So for this last commit we need to make a new <code>ThingDataStore</code> to provide a set of <code>shuffledThings</code>.  I added this about <code>ThingDataStore</code> in <code>JustOneThingProvider.swift</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2966,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-15.44.29.png?w=1024" alt="" class="wp-image-2966" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>All it does is pull all the <code>PersistentThings</code> from the database and provide a way to return them shuffled.  You'll notice I map the results using a property <code>asThing</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2969,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-15.39.13.png?w=1024" alt="" class="wp-image-2969" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I added this as <code>PersistentThingExtension.swift</code> and it provides a basic encapsulation. of the request (in case we want to filter in some way later) and a conversion from a <code>PersistentThing</code> (a <code>CoreData</code> <code>ManagedObject</code>) to a Thing, our value type struct.  It also hard codes what to do if either is null.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So our <code>ThingCoreDataStore</code> provides a shuffled set of <code>Things</code>, just like the other store, only these are loaded from CloudKit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With all that in place we can now switch the Provider over to using the new DataStore and we're good to go!.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2971,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-15.52.19.png?w=1014" alt="" class="wp-image-2971" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lets make sure the app is using the right PersistenceController and we'll commit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2980,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-16.00.28.png?w=890" alt="" class="wp-image-2980" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's in the repo as "Part 9: Load the Things from CoreData".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's the widgets on a Phone screen...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2972,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-15.38.10.png?w=658" alt="" class="wp-image-2972" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>and on the Mac Notification Center</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2974,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-15.31.47.png?w=1024" alt="" class="wp-image-2974" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing I have discovered and have not yet found a way round for, you'll see in the iPhone screenshot above.   If you add the same size widget multiple times and don't have any <code>ConfigurationIntent</code> parameters to change, each displayed widget is coming from the same instance.  It's not possible to have each instance pull a different random <code>Thing</code>.  In essence there's only a single <code>SystemWidget</code> instance for each size, that single instance pulls a random Thing and then its view is just blotted as many times as necessary.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was kind of a pain for me as I quite liked the idea of having a random thing on each page of my phone.  I could work around it by adding a purely synthetic integer configuration parameter "widget number" and changing it for each widget so they all become distinct and pull a different random <code>Thing</code>, but that's beyond the scope of this little exercise.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hope its been useful!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>

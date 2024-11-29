@@ -1,0 +1,73 @@
+---
+layout: post
+title: 'Part 10: Roundup'
+date: 2023-07-23 16:01:47.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  timeline_notification: '1690128108'
+  _publicize_job_id: '85997245864'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1690128662
+  _thumbnail_id: '3002'
+  _last_editor_used_jetpack: block-editor
+author: Alan Francis
+permalink: "/2023/07/23/part-10-roundup/"
+---
+<p><!-- wp:paragraph --></p>
+<p>So I'm done.  The point of these articles was for me to figure out how much code could really be shared between Mac, iOS, tvOS and watch (and even in part 8b, visionOS) and the answer is:  all of it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's the final project structure as of Part 9.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:jetpack/layout-grid {"column1DesktopSpan":6,"column1TabletSpan":4,"column1MobileSpan":4,"column2DesktopSpan":6,"column2TabletSpan":4,"column2MobileSpan":4,"className":"column1-desktop-grid__span-6 column1-desktop-grid__row-1 column2-desktop-grid__span-6 column2-desktop-grid__start-7 column2-desktop-grid__row-1 column1-tablet-grid__span-4 column1-tablet-grid__row-1 column2-tablet-grid__span-4 column2-tablet-grid__start-5 column2-tablet-grid__row-1 column1-mobile-grid__span-4 column1-mobile-grid__row-1 column2-mobile-grid__span-4 column2-mobile-grid__row-2"} --></p>
+<div class="wp-block-jetpack-layout-grid column1-desktop-grid__span-6 column1-desktop-grid__row-1 column2-desktop-grid__span-6 column2-desktop-grid__start-7 column2-desktop-grid__row-1 column1-tablet-grid__span-4 column1-tablet-grid__row-1 column2-tablet-grid__span-4 column2-tablet-grid__start-5 column2-tablet-grid__row-1 column1-mobile-grid__span-4 column1-mobile-grid__row-1 column2-mobile-grid__span-4 column2-mobile-grid__row-2"><!-- wp:jetpack/layout-grid-column --></p>
+<div class="wp-block-jetpack-layout-grid-column wp-block-jetpack-layout-grid__padding-none"><!-- wp:image {"id":2991,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-16.49.13.png?w=601" alt="" class="wp-image-2991" /></figure>
+<p><!-- /wp:image --></div>
+<p><!-- /wp:jetpack/layout-grid-column --></p>
+<p><!-- wp:jetpack/layout-grid-column {"verticalAlignment":"top"} --></p>
+<div class="wp-block-jetpack-layout-grid-column wp-block-jetpack-layout-grid__padding-none is-vertically-aligned-top"><!-- wp:paragraph --></p>
+<p>We have a shared Model folder containing the CoreData/CloudKit model and persistence classes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We have an <code>Apps/AppShared</code> folder containing the <code>App</code> and its <code>ContentView</code>.  The only reason the <code>ListOfThingsView</code> was pulled out was because I made a decision to keep interactivity only available on iOS due to expediency and my own lack of experience.  There's no real reason to split these views and so it could have been in <code>AppShared</code> too.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That leaves the<code> Apps/JustOneThing</code> and <code>Apps/JustOneThingWatch</code> folder - one for each target containing just configuration information - The <code>Info.plist</code> and per target <code>entitlements</code>.</p>
+<p><!-- /wp:paragraph --></div>
+<p><!-- /wp:jetpack/layout-grid-column --></div>
+<p><!-- /wp:jetpack/layout-grid --></p>
+<p><!-- wp:jetpack/layout-grid {"column1DesktopSpan":6,"column1TabletSpan":4,"column1MobileSpan":4,"column2DesktopSpan":6,"column2TabletSpan":4,"column2MobileSpan":4,"className":"column1-desktop-grid__span-6 column1-desktop-grid__row-1 column2-desktop-grid__span-6 column2-desktop-grid__start-7 column2-desktop-grid__row-1 column1-tablet-grid__span-4 column1-tablet-grid__row-1 column2-tablet-grid__span-4 column2-tablet-grid__start-5 column2-tablet-grid__row-1 column1-mobile-grid__span-4 column1-mobile-grid__row-1 column2-mobile-grid__span-4 column2-mobile-grid__row-2"} --></p>
+<div class="wp-block-jetpack-layout-grid column1-desktop-grid__span-6 column1-desktop-grid__row-1 column2-desktop-grid__span-6 column2-desktop-grid__start-7 column2-desktop-grid__row-1 column1-tablet-grid__span-4 column1-tablet-grid__row-1 column2-tablet-grid__span-4 column2-tablet-grid__start-5 column2-tablet-grid__row-1 column1-mobile-grid__span-4 column1-mobile-grid__row-1 column2-mobile-grid__span-4 column2-mobile-grid__row-2"><!-- wp:jetpack/layout-grid-column {"verticalAlignment":"center"} --></p>
+<div class="wp-block-jetpack-layout-grid-column wp-block-jetpack-layout-grid__padding-none is-vertically-aligned-center"><!-- wp:paragraph --></p>
+<p>On the Widget side, we have our <code>Widgets/WidgetShared</code> folder that contains our <code>System</code> and <code>Accessory</code> widgets, each of which can be used on multiple platforms, along with the widget bundle that collects them.  A single TimelineProvider is there too, and all the assets.  In the case of the Widgets (unlike the apps) we're able to share the <code>Info.plist</code>.  This folder also contains the <code>Intent Definition</code> file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each of the target specific folders for Mac, Phone and Watch widgets only contains the platform's <code>entitlements</code> file.</p>
+<p><!-- /wp:paragraph --></div>
+<p><!-- /wp:jetpack/layout-grid-column --></p>
+<p><!-- wp:jetpack/layout-grid-column {"verticalAlignment":"top"} --></p>
+<div class="wp-block-jetpack-layout-grid-column wp-block-jetpack-layout-grid__padding-none is-vertically-aligned-top"><!-- wp:image {"id":2993,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-23-at-16.49.22.png?w=646" alt="" class="wp-image-2993" /></figure>
+<p><!-- /wp:image --></div>
+<p><!-- /wp:jetpack/layout-grid-column --></div>
+<p><!-- /wp:jetpack/layout-grid --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've been at pains to point out throughout that this is not really a full, complicated project.  It's still pretty close the templates Xcode generates, just coalesced into a single project.  Xcode templates showed us how to use a CloudKit data store in a SwiftUI app.  Xcode templates showed us how to make a Multiplatform app.  Xcode templates showed us how to create configurable widgets for all three platforms.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's been fun to try and pull them all together and figure out where they overlap and where they differ.   The end result, I hope, make it clear where we can save time (and maybe bugs) by changing code once, instead of multiple, repeated places.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>

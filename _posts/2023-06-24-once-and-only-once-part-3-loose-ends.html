@@ -1,0 +1,101 @@
+---
+layout: post
+title: 'Once and Only Once (Part 3 : Loose Ends)'
+date: 2023-06-24 18:37:25.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _thumbnail_id: '2628'
+  _publicize_job_id: '85184390161'
+  timeline_notification: '1687631847'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1687632044
+  _last_editor_used_jetpack: block-editor
+author: Alan Francis
+permalink: "/2023/06/24/once-and-only-once-part-3-loose-ends/"
+---
+<p><!-- wp:paragraph --></p>
+<p>OK.  As of <a href="https://alancfrancis.com/2023/06/24/once-and-only-once-part-2-widgets/">the end of part two</a> we have an app and a widget for every platform and we have reduced ourselves to the minimum number of files.  Everything is declared just once and used everywhere.  I could stop here but there are a couple of loose ends to address before we're done.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 11: Tidying up</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thing I want to do is get the timeline code out of the widget file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Create a new file, JustOneThingProvider.swift in the WidgetShared folder.  Cut and paste the Provider and SimpleEntry structs over there.  Change the imports to <code>import WidgetKit</code> and <code>import Intents</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2598,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-13.51.10.png?w=772" alt="" class="wp-image-2598" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2599,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-13.52.12.png?w=1024" alt="" class="wp-image-2599" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>we'll also add the preview back in.  Add this code to the bottom of the JustOneThingWidget.swift file to have a simple preview that works on on iPhone and Watch.  Note you need to have one of the widget targets active for the preview to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We're creating the EntryView with a simple entry and we use a different previewContext for watch, or iOS/macOS which share a set of families.  I event seen the widget preview work on macOS.  You need to run the extension and it opens in the widget gallery app.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2601,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.19.59.png?w=1024" alt="" class="wp-image-2601" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If you pick one of the iOS or watchOS widget targets you should see an appropriate preview (its just a timestamp :).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2603,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.25.46.png?w=828" alt="" class="wp-image-2603" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2605,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.25.59.png?w=846" alt="" class="wp-image-2605" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The last thing I want to do in this step is rename the watch app target/folder etc because "JustOneThingWatch Watch App" is a bit redundant.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First rename the folder and remove the Watch App part.  Dont forget to also remove the first space or you'll be really confused later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2607,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.28.24.png?w=882" alt="" class="wp-image-2607" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then rename the entitlements file in the same way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2610,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.28.27.png?w=710" alt="" class="wp-image-2610" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now we need to go to the build settings for the watch app target and rename the target.  Go into the settings and find the entitlements entry to make sure that reads <code>JustOneThingWatchApp/JustOneThingWatchApp.entitlements</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2612,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.36.18.png?w=1024" alt="" class="wp-image-2612" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lastly, just for good hygiene, we can rename the scheme used to build and run the watch app.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Use the Product-&gt;Scheme-&gt;Manage Schemes menu</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2614,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.37.31.png?w=1024" alt="" class="wp-image-2614" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>and rename the scheme to match the target (delete the "&lt;space&gt;Watch App")</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2616,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-24-at-14.29.52.png?w=1024" alt="" class="wp-image-2616" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK, lets commit again!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At this point we have added no custom code of our own (aside from the empty app groups entitlement that we will undoubtedly need to share data between app and widget) and all we have is as if Xcode offered a "Multiplatform app and Widgets" template.  The actual contents of the App, the ContentView, the Provider and the Widget are all still what Apple gave us, just with the duplication extracted.  That seems a good place to leave things for this part.  Next time I'll walk through adding my actual widget contents and configuration.</p>
+<p><!-- /wp:paragraph --></p>

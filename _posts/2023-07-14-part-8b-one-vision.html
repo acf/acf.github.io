@@ -1,0 +1,63 @@
+---
+layout: post
+title: 'Part 8b: One vision'
+date: 2023-07-14 21:01:38.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _thumbnail_id: '3000'
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: u:wpcom-ufa-v3-beta:1690128443
+  _publicize_job_id: '85749557651'
+  timeline_notification: '1689368499'
+author: Alan Francis
+permalink: "/2023/07/14/part-8b-one-vision/"
+---
+<p><!-- wp:paragraph --></p>
+<p>Just for shits and giggles I opened the project in Xcode15 and added visionOS as a supported platform on the main app.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2933,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.50.45.png?w=1024" alt="" class="wp-image-2933" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had to revisit the widget embedding to restrict the right widgets to the right platforms as Xcode had reset them to all platforms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2935,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.50.54.png?w=1024" alt="" class="wp-image-2935" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I added a simple AppIcon for visionOS. (two layers, 1024px @2x)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2939,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.51.19.png?w=1024" alt="" class="wp-image-2939" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also changed the <code>ContentView</code> where I had been restrictive in the else case <code>(if iOS elseif tv | Mac | watch ) </code>and made it just a straight <code>if iOS else....</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2937,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.54.33.png?w=1024" alt="" class="wp-image-2937" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I assumed this would mean my editable list was still just iOS and vision would use the readonly list.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Apparently not.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:video {"id":2944,"guid":"eMpY6iMF","videoPressTracks":[],"videoPressClassNames":"wp-block-embed is-type-video is-provider-videopress"} --></p>
+<figure class="wp-block-video wp-block-embed is-type-video is-provider-videopress">
+<div class="wp-block-embed__wrapper">
+https://videopress.com/v/eMpY6iMF?resizeToParent=true&amp;cover=true&amp;preloadContent=metadata&amp;useAverageColor=true
+</div>
+</figure>
+<p><!-- /wp:video --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm not clear why but it seems to prefer the iOS branch and shows the editable list :-)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, I'll be back on the main branch and the shipping Xcode for me later, this is just a little diversion at the <a href="https://git.alancfrancis.com/acf/JustOneThing/src/branch/xcode15-and-vision">xcode15-and-vision branch</a>.</p>
+<p><!-- /wp:paragraph --></p>

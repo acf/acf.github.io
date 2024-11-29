@@ -1,0 +1,211 @@
+---
+layout: post
+title: 'Part 7: CloudKit'
+date: 2023-07-07 14:45:40.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: s:wpcom-ufa-v3-beta:1688840154
+  _thumbnail_id: '2863'
+  _publicize_job_id: '85539736597'
+  timeline_notification: '1688741143'
+author: Alan Francis
+permalink: "/2023/07/07/part-7-cloudkit/"
+---
+<p><!-- wp:paragraph --></p>
+<p>I've put it off for as long as I can but here's the boring post on adding CloudKit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thing we need to do is add some capabilities to the apps and widget extensions.  We'll make them all part of the same app group, and then add background modes for push notifications, which CloudKit needs to keep our database up to date.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As I've mentioned before, it could be that SwiftData has added simpler ways to do these things but this is essentially documenting what I did earlier this year with CloudKit as the easiest way to share data between the widgets on all the platforms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">App Group</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>First we need to add all 5 targets (two apps, 3 widgets) to the same AppGroup.  I started with the main app but you can pick any target to be first.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We're going to select the target and the signing and capabilities target and you should see the app groups entitlement we added before.  If we click the (+) we can add a new app group.  I tend to use reverse DNS and since this is across multiple platforms I use <code>.apps.</code> between the domain name and the app name.  Note that it has to start with <code>group.</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2810,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.11.23.png?w=1024" alt="" class="wp-image-2810" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If you start with the main app make sure you see the app group in both the macOS and the iOS/tvOS sections.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2814,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.11.58.png?w=1024" alt="" class="wp-image-2814" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once that's done we can go to each of the other four targets and just enable that new group by checking the apparently-disabled-but-not-really checkbox.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2815,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.12.07.png?w=1024" alt="" class="wp-image-2815" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>An odd note.  First time I did this all was well.  Second time I found I hit a problem with the Mac Widget extension and somehow I couldn't access app groups in the UI.  If this happens you can edit any of the other entitlements files <strong>as source</strong> and copy and paste the app groups section into the Mac widget entitlements.  Its the same text everywhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2818,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-14.56.41.png?w=1024" alt="" class="wp-image-2818" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next we're going to go back to each target in turn and add the "iCloud" entitlement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2819,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.22.10.png?w=1024" alt="" class="wp-image-2819" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll choose CloudKit, and add a new container in one of the targets, and then select that container in all the other targets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2821,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.23.04.png?w=1024" alt="" class="wp-image-2821" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2822,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.00.42.png?w=1024" alt="" class="wp-image-2822" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now all the apps and widgets will talk to iCloud and all will share data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I committed here to keep things tidy, and so the diff is more obvious about what each step does.  Its "Part 7: Data Sharing Entitlements"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Background Modes</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>CloudKit works using silent push notifications to keep our data up to date, so we need to enable that for the two app targets (not the widgets).  Add the Background Modes entitlement to the main app (twice, once for iOS, once for tvOS) and then again to the Watch app target.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2826,"width":690,"height":437,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large is-resized"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-12.06.04.png?w=714" alt="" class="wp-image-2826" width="690" height="437" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In both targets we need to check Remote Notifications (twice in the main app, once in the watch app).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2828,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-12.06.59.png?w=1024" alt="" class="wp-image-2828" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2829,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-12.06.45.png?w=1024" alt="" class="wp-image-2829" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's another commit here - "Part 7: Background Modes"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's all the configuration.  Now we need some more code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">CoreData and CloudKit</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I shuffled the project structure around a little.  I made a "new group <strong>WITHOUT</strong> folder" called Apps and one called Widgets just to pull the various folders together.  Make sure its <strong>WITHOUT</strong> folder for this step otherwise the various paths we've set on the build settings stop working.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2833,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-14.40.25.png?w=718" alt="" class="wp-image-2833" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Drag the three widgets and the widget shared to the Widgets group.  Drag the two apps and the app shared to the Apps group.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2835,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.10.23.png?w=684" alt="" class="wp-image-2835" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next I make a new group <strong>WITH</strong> a folder called Model.  This will hold all our persistence code that works across widgets and apps.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2837,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.11.53.png?w=526" alt="" class="wp-image-2837" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hate this with-or-without-folder stuff as sometimes the specific path matters (like the entitlements) and sometimes it doesn't.  As a rule I try and have most things in folders that match the group structure and only use folderless groups at the very top level for collecting stuff together.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thing we're going to add is a CoreData model, and we'll add it to all targets.  I've called it <code>JustOneThingCloudModel</code> which is a bit verbose but I want to clearly distinguish the CoreData persistent model entities from any ViewModel type classes or structs (like <code>Thing</code>).  Maybe <code>SwiftData</code> will make this unnecessary but right now CoreData model properties all have to be nullable and <code>@objc</code> etc so lets leave the CoreData machinery isolated from our SwiftUI+Swift models.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2839,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.41.38.png?w=878" alt="" class="wp-image-2839" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2841,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.43.36.png?w=1024" alt="" class="wp-image-2841" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In that model I've created one entity, <code>PersistentThing</code>, and added properties for the <code>text</code> and <code>createdAt</code> (just like the current Swift model) and a <code>UUID</code> for uniqueness.  I don't know for sure that I need that but old habits die hard and I was taught to give my database rows an explicit primary key.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2843,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.47.05.png?w=1024" alt="" class="wp-image-2843" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One last step in this little journey and that's to add some way for the apps and widgets to access the CoreData stack.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When you tick the CoreData+CloudKit box on creating a new project, you get a file called <code>Persistence.swift</code> that looks mostly like this.  (it also has some stuff for a preview, but I've ignored that for now).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2846,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-14.37.34.png?w=1024" alt="" class="wp-image-2846" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've made a few changes to this as you'll see.  Some were required to used App Groups, then I discovered a problem with paths on tvOS and then I've done some refactoring just to make it clearer (imo) which bits are which.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First here's my version of what's above.  Like the original we override the URL if we're in memory.  Unlike the original we also have to override the URL even in the default case because we are using App Groups.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2848,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.52.40.png?w=1024" alt="" class="wp-image-2848" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The default, not-ideal error handling is just extracted to a separate method</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2850,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.52.10.png?w=1024" alt="" class="wp-image-2850" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And I added an extension on <code>URL</code> to build the store URL for the group.  The key is <code>FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)</code>.  You can also see here the change I had to make when I discovered that tvOS didn't work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2852,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-11.51.56.png?w=1024" alt="" class="wp-image-2852" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also pulled out some of the static convenience code into an extension.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2854,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.34.05.png?w=1024" alt="" class="wp-image-2854" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>All this code is in a file called <code>PersistenceController.swift</code> in the Model group.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2855,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.34.58.png?w=676" alt="" class="wp-image-2855" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The last thing we need to do here is add some code to initialise the Persistence controller in the App and Widgets and check it all build and runs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2857,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.36.59.png?w=1024" alt="" class="wp-image-2857" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:image {"id":2858,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.37.06.png?w=1024" alt="" class="wp-image-2858" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:image {"id":2859,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-07-at-15.37.12.png?w=1024" alt="" class="wp-image-2859" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>All this is in another commit "Part 7: Simple PersistenceController"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>

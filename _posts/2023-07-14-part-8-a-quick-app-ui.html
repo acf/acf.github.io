@@ -1,0 +1,138 @@
+---
+layout: post
+title: 'Part 8: A Quick App UI'
+date: 2023-07-14 20:27:42.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _thumbnail_id: '2999'
+  _last_editor_used_jetpack: block-editor
+  _publicize_job_id: '85748924737'
+  timeline_notification: '1689366464'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1690128407
+author: Alan Francis
+permalink: "/2023/07/14/part-8-a-quick-app-ui/"
+---
+<p><!-- wp:paragraph --></p>
+<p>This is probably the part I am least relaxed about doing in public as I really have no idea what I'm doing. :-)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I made a new CoreData SwiftUI project and essentially stole the guts of that to make it work in my app.  All it has to do, really, is show a big list of All The Things.  It was relatively easy for me to add Add+Delete functionality on iOS so that's what I did.  iOS can create and delete Things, all the other platforms just show a read only list.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Environmental Context</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first step is making the shared context from our persistence controller available to the app.  We do this through the SwiftUI environment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2900,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-20.53.52.png?w=1024" alt="" class="wp-image-2900" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since there's no way to add any items for display yet, You can see above I added back the preview version of the <code>PersistenceController</code>.  Again this is just Apple's template code unchanged apart from  adjustments for my own Entities.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It provides an in-memory, disposable context with 10 Things in it so we can </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2898,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.35.25.png?w=1024" alt="" class="wp-image-2898" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can swap the app property from <code>PersistenceController.preview</code> to <code>PersistenceController.shared</code> when we're happy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">List Views</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next up I added two separate ListViews.  The first is in <code>AppShared</code> and added to both app targets because it works across Watch and Mac+TV+Phone and I called it <code>SimpleListOfThingsView</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2902,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.35.52.png?w=510" alt="" class="wp-image-2902" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2903,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.35.59.png?w=1024" alt="" class="wp-image-2903" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's dirt simple and just uses the environment context to fetch all the Things, sorted by oldest first, and displays them in a list.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's how it looks on a Mac, TV and Watch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2909,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.03.48-1.png?w=978" alt="" class="wp-image-2909" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":2908,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.05.45.png?w=1024" alt="" class="wp-image-2908" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2906,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.06.40.png?w=536" alt="" class="wp-image-2906" /></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Nothing to write home about but it works.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next we'll create the version for the iPhone.  I've added this just to the Apps -&gt; JustOneThing folder and just the app target as it's specific to the Phone app.  Its just called <code>ListOfThingsView</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2911,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.36.09.png?w=484" alt="" class="wp-image-2911" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2912,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.36.35.png?w=1024" alt="" class="wp-image-2912" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Again this is just lifted directly from the new project I made.  The top of the View looks basically the same as the <code>SimpleListOfThingsView</code> but it comes with the add and remove methods that Apple's template provided.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's the body.  You can see the issue with using the CoreData entity directly since all its fields are optional I'm supplying default text everywhere for now.  We'll fix that when we add a translation layer between our <code>PersistentThing</code> class and our <code>Thing</code> value type later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2914,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.36.43.png?w=1024" alt="" class="wp-image-2914" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <code>addItem</code> method just creates a <code>PersistentThing</code> with no user input (Apple's sample unchanged).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2916,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.36.53.png?w=1024" alt="" class="wp-image-2916" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>and the <code>deleteItems</code> machinery is unchanged.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2919,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.37.00.png?w=1024" alt="" class="wp-image-2919" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried to get the swipe deletion working on the Mac but gave up as (like I've said) I really don't care about the app UI I just want to work on the widgets.  Hence its just the iOS app that provides any kind of interaction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On iOS the view looks like this and of course the edit button and swiping to delete works fine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2924,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-14-at-21.18.38.png?w=754" alt="" class="wp-image-2924" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The last step it to use these two new views in the app.  For that we make a change to the <code>ContentView</code> to load the right view on the right platform.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2922,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-10-at-21.35.46.png?w=1024" alt="" class="wp-image-2922" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>At this point we can test out both views on all the various simulators and when we';re happy they work we can switch the <code>PersistenceController</code> in the app from <code>.preview</code> to <code>.shared</code> and try it all out.  If you sign into iCloud on the various platforms and simulators you should be able to create things on iPhone and see them appear on tv, Mac and watch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One issue I have been unable to resolve is that it can take some time for a first run of an app to download its initial set of data from iCloud, leading me to believe it hadn't worked. I'd love some way to put up, if not a modal, then some kind of indicator that says "hold on while I do the first sync of data".  But because it's all happening in the background and you're not supposed to care, there doesn't seem to be an easy way to be notified. (Happy to accept answers on a postcard).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lets commit!  It's under "Part 8: A Quick and Dirty App UI"  <a href="https://git.alancfrancis.com/acf/JustOneThing">in the repo</a>.</p>
+<p><!-- /wp:paragraph --></p>

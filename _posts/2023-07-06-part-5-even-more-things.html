@@ -1,0 +1,92 @@
+---
+layout: post
+title: 'Part 5: Even More Things'
+date: 2023-07-06 12:59:25.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  wordads_ufa: s:wpcom-ufa-v3-beta:1688667561
+  timeline_notification: '1688648368'
+  _publicize_job_id: '85507266310'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '2800'
+author: Alan Francis
+permalink: "/2023/07/06/part-5-even-more-things/"
+---
+<p><!-- wp:paragraph --></p>
+<p>The "part" breaks are somewhat arbitrary now, but I figure I'll just keep recording what I'm doing with the codebase and how I'm doing it.   Its worth reiterating that I am very much <em>Not An Expert</em> and may well be <em>Holding it Wrong</em>, but I'm feeling my way there and I guess by "showing my working" someone will be able to help me understand which bit of thinking was wrong if it all goes pear shaped.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I feel I'm still very much putting off data persistence and CloudKit, because its a bit involved and not massively exciting, and I'm also putting off a functional UI because I have zero SwiftUI skills and I expect it to look awful :-)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyhoo, I sat back down this morning and the first thing I did was extract a <code>ThingView</code> from my <code>ThingEntryView</code>.  Removed the slightly irritating Demeter violation and also means I have a simple <code>ThingView</code> to tweak and use in a bunch of places... maybe even migrate it from the Widget to shared with the App.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It probably looks a little pointless for the sake of a single dot-separator, but it feels like it's worth doing now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2707,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-08.29.11.png?w=712" alt="" class="wp-image-2707" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Maybe the <code>ThingEntryView</code> won't carry its weight for long.  The <code>ThingEntry</code> is just a timeline implementation detail and maybe nobody else (especially the View hierarchy) should care about it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">A Bigger Thing</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'd like the text in the Widget to be as large as it can be, and shrink if necessary.  And I'd like to have some random colours  so it catches my eye, so lets have a play with the ThingView.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the colours I just hacked something together for now, though some better defined palettes might be better.  Essentially if we're in light mode the system background for widgets is white so give me a dark-ish colour if we're in dark mode, reverse that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2715,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-13.27.09.png?w=1024" alt="" class="wp-image-2715" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Any <code>View</code> using the colour can access the environment variable <code>colorScheme</code> and then ask for a suitable foreground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The font sizing was a little more involved.  I honestly cant remember all the things I tried before and I cant remember how I ended up with this snippet, but the first time I hacked this app together this is what I ended up with:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2717,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-13.29.00.png?w=1024" alt="" class="wp-image-2717" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In essence it lets me attach a view modified which calculates the largest font size for the area, given some line limit and minimum scale factor.  Suggestions very welcome for a better way to do it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both of these are in a file in <code>WidgetShared</code> called <code>InterfaceExtensions.swift</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So, I changed my <code>ThingDatastore</code> to have some random, different-sized Things and here's the result in dark and light modes in a variety of widget sizes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2720,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-13.42.06.png?w=1024" alt="" class="wp-image-2720" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2721,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-13.42.49.png?w=1024" alt="" class="wp-image-2721" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2722,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-13.41.58.png?w=1024" alt="" class="wp-image-2722" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>So far so good.   Random colours so it looks different enough that I don't start to ignore it, and sized to make the best use of space.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Like the colours it would probably be better to have a standard "palette" of sizes to at least provide some consistency, but I'm not anticipating seeing multiple widgets together at once so I don't mind one at 16 points and another at 17 points.  There'll be one widget on my phone Home Screen and one on my Mac sidebar.  I have an idea to use the <code>Configuration</code> to maybe show two <code>Things</code> side by side in a medium widget, or stacked on top on a large widget, but that can wait for now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One problem I noticed is only obvious if you play around with previews.  I changed the preview Thing to be a longer text and I changed the preview context to <code>accessoryCircular</code>.  You can see how tiny the text is there to the left of the clock.  Perhaps we'll want to do something different for an accessory widget (phone Lock Screen will be the same), but <code>accessoryInline</code> and <code>accessoryRectangular</code> both look fine on the watch</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2725,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-06-at-13.49.15.png?w=1024" alt="" class="wp-image-2725" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>So that seems like a good place to commit ("Part 5: Fonts and Colours") and start thinking about different kinds of widgets for different situations.  </p>
+<p><!-- /wp:paragraph --></p>

@@ -1,0 +1,232 @@
+---
+layout: post
+title: 'Once and Only Once (Part 1 : Apps )'
+date: 2023-06-24 18:34:37.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _thumbnail_id: '2626'
+  _publicize_job_id: '85184344258'
+  timeline_notification: '1687631678'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689366796
+  _last_editor_used_jetpack: block-editor
+author: Alan Francis
+permalink: "/2023/06/24/once-and-only-once-part-1-apps/"
+---
+<p><!-- wp:paragraph --></p>
+<p><em>(Started this before WWDC23 which introduced new widget stuff, but I'm ignoring that for now)</em>.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had an idea for an app.  Super basic and simple, the actual app was a dirt simple todo app where you add and remove strings (reminders) to a collection.  What was interesting (to me) about the app was that I didn't much care about the data entry part of the app, what I wanted was a widget <strong>everywhere</strong> pointing to the same shared data source and showing me just one random thing from the list.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm quite a disorganised person and I find it works best if I glance down at my phone and randomly see "buy toothpaste" or "fix Hope's headphones" rather than a convoluted list of context aware things.  Sometimes the random reminder is a time when I can do the job right then, so I do. If I can't do it right then, at least it keeps it floating around in the front of my memory.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So anyway, dirt simple app, could be horrible, just a way to add strings, nothing fancy.  <strong>But widgets for the phone, phone lock screen, Mac, and watch complications.</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I figured SwiftUI was selling the "one Multiplatform app" and widgets were just views, so I figured I'd try an experiment to see how I'd get Xcode to work with a project that could make all those apps and widgets for the different platforms, and then <strong>reduce duplication</strong> wherever I found it and share code/configuration wherever I could.  Through the course of this I won't be adding any custom code for my app, I just want to imagine Xcode had a single "<strong>Multiplatform App and Widgets Everywhere</strong>" template.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Disclaimer</strong>:  No tests here, certainly not a production app, this is literally an experiment the sole aim of which is to produce an Xcode project that can build an app and a widget that runs on all of Apple's platforms (I'm writing this three days before the keynote so maybe there will be a headset by the time I publish) <strong>with the smallest number of target-specific files</strong> .  Along the way I'll highlight things that seemed odd or counterintuitive.  Or places where Xcode sees the platforms as separate or the same, regardless of how we might think of then.  There may be perfectly sensible explanations but at the time they surprised me so I'll mention them.  Lastly, I did this once already over a couple of days, hacking my way there.  This is my attempt to revisit what I did a commit at a time and wrote down the steps.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's all <a href="https://git.alancfrancis.com/acf/JustOneThing">here in this repo</a>  which I'll add to as I add more commits and posts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step One : File-&gt;New-&gt;Project</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Let's make a new project in Xcode.  We'll pick a Multiplatform app and call it <em>JustOneThing</em>.   Allowing the version control option gives us our first commit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2443,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-20.14.25.png?w=1024" alt="" class="wp-image-2443" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step Two : Watch This</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll add a new target, select a watchOS app, and call it <em>JustOneThingWatch</em> (Xcode gets upset if you call it the same <em>JustOneThing</em> even though that's what I want it to be called.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2445,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-20.16.48.png?w=1024" alt="" class="wp-image-2445" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's a WatchApp for our existing <em>JustOneThing</em> iOS app. (Multiplatform app really)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2447,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-20.17.26.png?w=1024" alt="" class="wp-image-2447" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can make our second commit here and we can now run on a phone or iPad, a Mac, or a watch.  You can try the various simulators or your real devices is you have them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step Three : TV</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Let's add tvOS support.  Unlike the watch, this doesnt need a new target.  We select the App target in the Project settings and on the general tab we can see "Supported Destinations" at the top.  Let's select the little + and add AppleTV.  Xcode says it is making changes to certain things to adapt to the new platform, but it doesn't actually do the thing we need and if you try to run it on the TV simulator it complains that the watch app is embedded and that's not allowed for a TV app, though it was ok with Mac support.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2449,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-20.34.31.png?w=1024" alt="" class="wp-image-2449" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>To fix that we make a change near the bottom of the general tab of the <em>JustOneThing</em> target settings to say that the watch app should <strong>only</strong> be embedded when the platform is iOS.  Select the filter icon beside "Always Used", uncheck "Allow any platform" to enable the individual checkboxes, and ensure only iOS is selected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2451,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-20.36.10.png?w=1024" alt="" class="wp-image-2451" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2453,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.10.19.png?w=1024" alt="" class="wp-image-2453" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>At this point we make our third commit.  We now have a single project with two targets.  <em>JustOneThing</em>, a Multiplatform app which runs on Mac, iOS and tvOS, and <em>JustOneThingWatch</em>, a watch app which runs on watches.  Both of these are set us as apple defaults and we haven't changed any code yet.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Notice one thing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Aside from the entitlements file (the yellow checkbox-like  icon) both targets are identical.  They contains the same files, with exactly the same content.  The only difference is the name of the app.  This is only going to get worse when we start adding widgets, but lets make our third commit here - with an app for all four platforms building and working and showing us a globe and a message.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2455,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.17.10.png?w=1024" alt="" class="wp-image-2455" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 4: Merge</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK Lets try and get rid of some of this duplication.  Create a new group (with a folder) at the top level of the project.  We'll call it AppShared.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2458,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.36.32.png?w=782" alt="" class="wp-image-2458" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll drag the JustOneThingApp, the ContentView and the Assets from the <em>JustOneThing</em> folder to the AppShared folder..</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2460,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.37.11.png?w=618" alt="" class="wp-image-2460" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And then we can delete those same files from the <em>JustOneThingWatch</em> folder</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2461,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.38.06.png?w=596" alt="" class="wp-image-2461" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We need to tell Xcode that those three files should be included in BOTH targets and we do that in the "target membership" section of the sidebar.  Check the watch app target for the App, the ContentView and the Assets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2464,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.38.57.png?w=614" alt="" class="wp-image-2464" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>To make sure the Asset catalog is useful for all platforms, we'll need to add a single size watchOS app icon to the AppIcon imageset.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2467,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.38.18.png?w=1024" alt="" class="wp-image-2467" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And the tvOS AppIcon and Top Shelf Image assets,</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2468,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.38.34.png?w=1024" alt="" class="wp-image-2468" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That all takes us to our next commit.  The app should still build and run on all four platforms as before.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 5: Is this real?</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Just to check we're really using the same file in multiple places, let's add a tiny bit of code to the content view to show something different on each platform.  This isn't massively useful but it's a simple case to demonstrate how to use a single file across platforms which may be useful later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the bottom of the ContentView file we'll add little helper to let us distinguish iPad and iPhone.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2471,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.50.50.png?w=900" alt="" class="wp-image-2471" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>and then inside the content view we can replace the "Hello World" line with this.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2473,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-02-at-21.50.43.png?w=1024" alt="" class="wp-image-2473" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If we build and run you should see an appropriate message on each platform, all built from a single App and ContentView.  We can make another commit here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 6: Trust me</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next thing I want to do is remove the "Preview Content" folders because we're not using them at the moment and I really want to strip it down before I build it up.  When I delete the PreviewContent from the watch app, there's actually nothing left and git will (essentially) delete the folder when I commit.  I could drop to terminal and create a .gitignore or something in the folder, but I happen to know that when I eventually want to share data between iOS, watch and widgets I'm going to need an app group, so I'll need a separate entitlements file for the watch app.  Right now the entitlements file is just a placeholder, but trust me.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Select the "Signing and Capabilities" tab of the watch target, and click "+Capability"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2495,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-09.09.40.png?w=1024" alt="" class="wp-image-2495" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2497,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-09.09.55.png?w=1024" alt="" class="wp-image-2497" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We're going to double click on "App Groups" to add the AppGroups capability to the watch app.  Eventually we're going to watch to share data between the apps so it seems a safe bet we'll need them both in the same app group.  This (as mentioned above) also usefully drops a file in the watch app folder so we don't lose it between commits.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2499,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-09.12.48.png?w=1024" alt="" class="wp-image-2499" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If you used app groups before you'll likely see a few appear.  Don't click any of them yet, we're fine with it being empty.  Its created an entitlements file in the right folder and that's good enough for us for the moment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now switch to the main app target and follow the same steps to add app groups to that app.  Again, no need to select anything yet, just enough to have the capability exist.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Interestingly, for the main app we see app groups appear twice.  Once for iOS/tvOS (you can see I've used app groups for iOS before) and a separate entry from macOS.  Single app, single entitlements file, separately configured.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2502,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-09.15.00.png?w=1024" alt="" class="wp-image-2502" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We're now able to delete the Preview Content folders without losing the Watch App to git.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2504,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-09.20.00.png?w=938" alt="" class="wp-image-2504" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Delete the entries from Xcode and move to trash.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We now need to remove the references to them from the build settings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In build settings for both targets the setting is "Development Assets" under "Deployment" but you can just search for "Preview" and they'll show up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2506,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-09.21.58.png?w=1024" alt="" class="wp-image-2506" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Just delete the "JustOneThing/Preview Content" value to leave the setting empty. (Both targets).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that we have stripped away everything we <strong>don't</strong> need leaving just the stuff we do, better organised.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2508,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-09.24.25.png?w=884" alt="" class="wp-image-2508" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each app target has an entitlements file, and the rest is in a single shared folder since the <strong>App</strong>, the <strong>Views</strong> and the <strong>Assets</strong> are all shared across all 4 platforms, so lets commit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This post is so long, or maybe so image-heavy that Wordpress is actually struggling to let me edit it, so I'll stop here <a href="https://alancfrancis.com/2023/06/24/once-and-only-once-part-2-widgets/">and start a second part</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>

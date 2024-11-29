@@ -1,0 +1,168 @@
+---
+layout: post
+title: 'Part 4: A Thing'
+date: 2023-07-04 14:02:17.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: s:wpcom-ufa-v3-beta:1688667723
+  _publicize_job_id: '85449256626'
+  timeline_notification: '1688479338'
+  _thumbnail_id: '2798'
+author: Alan Francis
+permalink: "/2023/07/04/more-widgets-sort-of-part-4/"
+---
+<p><!-- wp:paragraph --></p>
+<p>The three parts of the "Once and Only Once" reached a conclusion.  You now have Apple's templates and targets all added and refactored so you can make changes in the fewest places.  This article sort of follows along from there but I'd hesitate to really call it part 4.  More like Book 2: Part 1 :-)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now we've got our project structured how we (or rather I) like we can start adding something useful to it where required.  I'll be taking fewer screenshots and taking bigger steps now as is this is really just me trying to document what I actually wanted to build, rather than a tutorial for you.  I'm far from experienced here, will be learning as I go and no doubt making a bunch of mistakes.  If you want a more in depth tutorial on Widgets or Intents, you'll find better options elsewhere :)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyhoo, if you recall, what I wanted to build was something to let me add some random, 2-3 word reminders and display them, one at a time, randomly on widgets across my phone, watch and Mac so I don t get overwhelmed with ALL THE THINGS and get gentle nudges about JUST ONE THING at a time. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I was making a Multiplatform app, it will work on an iPad (which I don't really use) and the AppleTV (which doesn't really have widgets).  I'll also remind you that I have minimal interest in the "data entry" part of the app. It will be as rough and simple as possible.  The two keys (for me) were: (1) I enjoyed messing with the code structure that got us this far and (2) I just want the strings appearing randomly on the widgets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">a Thing</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The beating heart of the Widget system is the timeline provider.  Its job is to supply one or more configured entries with a particular timestamp for the OS to display as close to this times as it can.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <code>ConfigurationIntent</code> part is essentially a supplied UI to configure each widget in a clear, constrained way.  In my case I'll <strong>eventually</strong> use it to allow a user to configure the large widget to show one very big reminder, or two smaller reminders, but for now we'll ignore it and work just on the timeline.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Right now the template has supplied us with a <code>ThingEntry:TimelineEntry</code> and that just contains the required properties of a <code>Date</code> (for the timeline) and a configuration (as discussed above).  What we don't yet have is a model object so the first thing I want to do is make a <code>Thing</code> struct to represent the Things.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All it needs right now is a String to hold the text, but I'll also add a created date as I suspect I might want to twiddle with the randomness to maybe show older ones more often.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For now I'm not worrying about persistence, or sharing between the apps and the widgets.  I just want a struct for the timeline to provide and the widget to display, so I'll put it in the WidgetShared folder.  I also added a static placeholder I can use where required.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2662,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-12.37.42.png?w=1024" alt="" class="wp-image-2662" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next I'll go make some changes around the Timeline and the Entry to use this new struct.  I'll rename <code>Provider</code> to <code>ThingProvider</code> and <code>SimpleEntry</code> to <code>ThingEntry</code>.  This is mostly in the <code>JustOneThingProvider</code> file but there are a couple of  changed in the <code>JustOneThingWidget</code> file.  While I'm there, and just because its annoying me, I'll rename <code>JustOneThingWidgetEntryView</code> (the templates default name) to <code>ThingEntryView</code>, because that's what it displays.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next we'll change the <code>ThingEntry</code> to take a <code>Thing</code>, alongside its <code>date</code> and <code>configuration</code>.  Wherever the compiler needs me to supply a <code>Thing</code>, I'll just use a <code>Thing.placeholder</code> instance for now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":2664,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-12.46.04.png?w=872" alt="" class="wp-image-2664" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2665,"sizeSlug":"full","linkDestination":"none","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-full is-style-default"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-12.46.23.png" alt="" class="wp-image-2665" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2663,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-12.46.37.png?w=676" alt="" class="wp-image-2663" /></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>This seems a decent place to make a commit, its in the repo as "<code>Part 4: Add a Thing struct</code>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ALL THE THINGS</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>So next up I'm going to work on the timeline to make a few actual <code>Things</code>.  I'll split up a simple data store array of things and the timeline building which add them at hourly intervals.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Eventually the data store will need to be persistent and it will need to be shared between the apps and widgets, but again for now I'll just embed them in the Provider so I can keep working on the widgets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First thing I did was make a new initialiser for the ThingEntry that provided defaults for the date and the configuration to make things a bit less verbose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That lets me reduce some of the code in the placeholder and snapshot methods, and in the preview in the <code>ThingWidget</code> file. I'm not yet sure what they do exactly, but less code is better and I will figure it out later.  The main timeline method still needs all three arguments but at least the <code>Thing</code> is first.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2670,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-13.26.33.png?w=1024" alt="" class="wp-image-2670" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I'm doing this I realise again that I am annoyed by <code>ConfigurationIntent</code>.  It's passed into something else called an <code>IntentConfiguration</code> in the widget file and the names are irritating close together, and opaque.  This is a classname I can change, but it's magically generated from the Intent Definition file.   I'll fix it later, cause I'm doing something else, but it bugs me and I should find how how to change it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now back to the Data Store.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2674,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-13.37.35.png?w=1024" alt="" class="wp-image-2674" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A simple <code>ThingDataStore</code> that can give me back an array of Things, hardcoded for now.  I've also added a way get them in random order.  I'll add a <code>ThingDataStore</code> instance to the provider to separate the "getting of things" from the "building of timeline entries".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the Provider we'll change the timeline code to get all the shuffled things and return them as timeline entries 15 minutes apart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I was there I pulled the <code>recommendations</code> method out to an extension as it didn't seem to belong with the rest of the "give me some entries" methods.  Its only required on the watch so potentially I could move it to the WatchWidget folder/target in a separate file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2676,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-13.48.38.png?w=1024" alt="" class="wp-image-2676" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't like having to the keep the separate line to increment the running time when what I really needed was a method on date which incremented and returned self. So I added one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2680,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-13.58.05.png?w=1024" alt="" class="wp-image-2680" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That let me simplify my timeline method a little</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2681,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-13.58.11.png?w=1024" alt="" class="wp-image-2681" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next, I want to update the <code>ThingView</code> to display the text of our <code>Thing</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2684,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-14.22.49.png?w=798" alt="" class="wp-image-2684" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was tempted at this point to make it a ThingView and just pass the thing rather than the whole entry, but we may want to access the configuration at some point and so for now lets leave it taking the whole entry and live with the Demeter violation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK!  If we switch to the MacWidgetExtension target and do a clean build, and then run, we'll load the widget up pin the WidgetKit simulator app where we can see the placeholders, snapshots etc, and most importantly our timeline!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2682,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-14.28.24.png?w=1024" alt="" class="wp-image-2682" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The timestamp at the bottom of each widget is the timeline date from the entry and the text is the Thing.text. We can see as the timeline proceeds the widgets are displayed in a random order. W e're done, right ?   SHIP IT.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Well, we'll at least commit.  I've called it "Part 4: Show the Things".  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm tempted to stop here for now.  It's quite tiring doing a little programming and then stopping to show what I've done.  Last thing I'll do for now is make a little icon for the apps and choose an accent colour to make things a little more interesting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I went with the <code>systemOrange</code> for a highlight colour and I used the excellent <a href="https://www.createchsol.com/blog/?id=bakery-simple-icon-creator">Bakery app</a> to knock up a quick Icon.  Bakery is pretty clear that it's just an SFSymbol on a background and that means you cant use them for App Store submissions due to copyright issues, but it's fine for development :-). It doesnt do the AppleTV as the icon there is layered and complicated, but it'll be nicer on the Mac and Phone and Watch (my primary use cases).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2683,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-04-at-14.42.57.png?w=648" alt="" class="wp-image-2683" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A last commit - "Part 4: Colour and Icon" for the above, and then one more for some super simple AppleTV assets I knocked up in <a href="https://flyingmeat.com/acorn/">Acorn</a> ( "Part 4: Apple TV Assets" ) and we're done for now!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2697,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/screenshot-2023-07-05-at-17.07.14.png?w=1024" alt="" class="wp-image-2697" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2699,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/07/appletv_topshelf_wide402x.png?w=1024" alt="" class="wp-image-2699" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>

@@ -1,0 +1,272 @@
+---
+layout: post
+title: 'Once and Only Once (Part 2 : Widgets)'
+date: 2023-06-24 18:35:27.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _thumbnail_id: '2627'
+  _publicize_job_id: '85184358157'
+  timeline_notification: '1687631728'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1687631982
+  _last_editor_used_jetpack: block-editor
+author: Alan Francis
+permalink: "/2023/06/24/once-and-only-once-part-2-widgets/"
+---
+<p><!-- wp:paragraph --></p>
+<p><a href="https://alancfrancis.com/2023/06/24/once-and-only-once-part-1-apps/">In Part One of this article</a> we created an Xcode Project that builds an app for macOS, tvOS, iOS and watchOS and removed all the (to us) redundant duplication that Xcode had added for each template.  In this part we'll add widgets for Mac, Phone and Watch and try to do the same job of sharing files where can to give us a single place to change things.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 7: Adding Widgets</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the targets list in the project file we'll add a "Widget Extension" from each of macOS, iOS and watchOS (no widgets on tvOS).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2516,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-13.23.25.png?w=1024" alt="" class="wp-image-2516" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2519,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-13.24.19.png?w=1024" alt="" class="wp-image-2519" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We name the widgets appropriately but otherwise accept the default.  Configuration Intents are common for configuring widgets so we'll say yes to those.  We don't need a Live Activity at the moment because my reminders don't have any duration.  Mac and Phone get default embedded in JustOneThing, watch gets embedded in "Just One Thing WatchApp".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After we're done the navigator looks like this.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2521,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-13.43.09.png?w=882" alt="" class="wp-image-2521" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>So much duplication!  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul><!-- wp:list-item --></p>
+<li>Once again the Assets, Info.plist and Intent Definition File are identical so we should be able to share those. </li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Only the Mac Widget project has an entitlements file.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Only the iOS Widget project has a WidgetBundle tagged with @Main.  Watch and Mac widgets have the @Main tag on the XXXWidget classes themselves.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The XXXWidget.swift files differ only in the names, and watch has some "recommendations" since Watch Widgets don't use a full configuration UI like Mac+iOS.</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's a problem though.  We'll commit anyway, just for posterity, but the code won't currently build as all three Intent Definitions care a ConfigurationIntent class and Xcode complains.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For purposes of this article I was tempted to rename all three to get to a "it builds" state for this step.  We'd need to go change the timeline code in each widget to use the new individual name for the Intent.  Since the goal in the end is to make them more the same, not more different, I'm just going to leave them as is, broken, and commit so I know a known "starting point" when I begin the surgery to unify it all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 8: Extract a WidgetShared to MATCH AppShared.</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>First we'll make a new Group (with Folder) called WidgetShared.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2527,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-20.20.22.png?w=912" alt="" class="wp-image-2527" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can pick any one of the widgets (say Mac) and drag the Info. the Intent and the Assets to the WidgetShared folder and delete the other copies (from say Phone and watch).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2533,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-20.31.30.png?w=556" alt="" class="wp-image-2533" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We should check the intent definition is added to all three targets widget targets, and both app targets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2530,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-20.31.37.png?w=522" alt="" class="wp-image-2530" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The assets file we'll rename to WidgetAssets just so we're clear its different from the app and make sure its added to all three Widget targets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2532,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-20.31.44.png?w=524" alt="" class="wp-image-2532" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Info.plist is more fiddly.  We have to go into the build settings for each widget target and change the Packaging-&gt; info.plist file to WidgetShared/Info.plist</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2535,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-20.24.35.png?w=1024" alt="" class="wp-image-2535" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lastly we have the same problem we had in step 3 where the watch extension was being included in the Mac app.  Here we need to ensure the iPhone and Mac widget extensions are only included in the relevant builds (remember this is supposed to be a single app, but we have to be aware of the distinct platforms when it comes to embedding).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2538,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-11-at-20.25.52.png?w=1024" alt="" class="wp-image-2538" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the main app target, make sure the Mac and iOS widget filters get set appropriately.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK, it should all build for all platforms and we can go for another commit.  We now have:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul><!-- wp:list-item --></p>
+<li>App<!-- wp:list -->
+<ul><!-- wp:list-item --></p>
+<li>a Mac+iOS+TV app </li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>a watch app </li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>an AppShared folder for the bulk of the sources.</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Widgets<!-- wp:list -->
+<ul><!-- wp:list-item --></p>
+<li>a Mac Widget Extension</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>a Phone Widget Extension</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>a Watch Widget Extension</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>a WidgetShared folder for the bulk of the sources</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 9: Just Like Step 6</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>In step 6 I asked you to trust me and we added an entitlements file for each target.  We're going to do the same for the widgets but its extra fiddly because Xcode puts them at the root of the project structure, so some manual move is required.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Mac already has entitlements, so select first the Phone and then the Watch widget targets and add a new capability - App Groups.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2570,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.00.50.png?w=1024" alt="" class="wp-image-2570" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>These will be added to the root of the project (right at the top of the navigator) and so we'll have to move them (and I renamed them too, because I think PhoneWidget and WatchWidget is quite enough).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2572,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.02.27.png?w=564" alt="" class="wp-image-2572" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Forst we can drag each entitlements file to the right Group, then we rename each by removing the word Extension from the filename.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2574,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.04.09.png?w=592" alt="" class="wp-image-2574" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We have to tell the build settings about our change too, so got to the target settings for each of the Phone and Watch widgets and use the search bar to find" entitlements".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll replace "PhoneWidgetExtension.entitlements" with "PhoneWidget/PhoneWidget.entitlements" and do the same for the watch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2577,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.05.50.png?w=656" alt="" class="wp-image-2577" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Finally we are where we want to be.  Each widget has its own entitlements and they are named consistently. Lets commit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2579,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.06.15.png?w=530" alt="" class="wp-image-2579" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Step 10: Sharing Code</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The work we've done on the widgets so far has shared configuration files and assets.  Like we did on the App targets it would be nice to share as much code as possible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm not going to draw it all out, you can look for yourself, but if you compare the swift files PhoneWidget.swift, WatchWidget.swift and MacWidget.swift they are essentially identical except for the different names, and two distinct differences.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Firstly, the <code>Provid</code>er struct in the Watch widget has an additional method <code>recommendatio</code>ns( ) that's used for configuration on the watch where the UI is limited and a full configuration interface is not possible.  In that situation the watch provides a few "pre-canned" configurations to choose from - the recommendations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is on the Provider, *not* the actual Widget, but still it doesnt hurt if that method appears on the Phone or Mac, its only Watch that needs it, so we'd be ok to pick the Watch version of <code>Provider</code> to share.  Phone and Mac will just ignore the method.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second difference is directly related to the Widget however.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On Mac and Watch, there's a <code>@main</code> decorating the Widget struct. It s not there on Phone.  Why not?  On the Phone there's an additional file <code>WidgetBundle</code> which as the <code>@main</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>WidgetBundle is used if the extension exports more than one kind of widget and it seems that Apple almost expect this of the Phone, but not of the Mac or  Watch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Oversight? Or  maybe they'd prefer we make a new extension per widget on the Watch and Mac.  In either case, the distinction is arbitrary and so again we can choose the Phone version to share - all platforms with have a @main WidgetBundle wrapping an non-@main Widget.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lets get started.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First lets Drag the WatchWidget.swift file to WidgetShared. We' ll pick that one just because it has the extra Provider method and will save us a few seconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Check its available in all three widget targets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2581,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.36.51.png?w=782" alt="" class="wp-image-2581" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Delete the PhoneWidget and WatchWidget files,</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2583,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.36.03.png?w=822" alt="" class="wp-image-2583" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then rename the WatchWidget.swift file to JustOneThingWidget.swift and edit the contents to remove the preview (for now) and rename the WatchWidgetEntryView and WatchWidget to JustOneThingWidgetEntryView and JustOneThingWidget.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The last thing we are going to do in this stage is bring across the WidgetBundle to make it shared as well.  We won't need the file, but we'll copy and paste the code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First select the code in PhoneWidgetBundle.swift and copy it it over to the top of JustOneThingWidget.swift.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2585,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.45.26.png?w=1018" alt="" class="wp-image-2585" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":2586,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.45.48.png?w=892" alt="" class="wp-image-2586" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Replace the PhoneWidget parts with JustOneThingWidget</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2588,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.46.28.png?w=968" alt="" class="wp-image-2588" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And we'll need to remove the @main from the JustOneThingWidget struct below because we have it on the bundle now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2590,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.46.06.png?w=1024" alt="" class="wp-image-2590" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The last thing we need to do is delete the PhoneWidgetBundle.swift file because we don't need it any more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2591,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2023/06/screenshot-2023-06-23-at-19.50.47.png?w=922" alt="" class="wp-image-2591" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And that's the end of Step 10!  Like the App we now have moved pretty much everything to a shared folder and all that's left as target specific are the entitlements files.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This will change as we add support for different widget types, but for now, we have a single widget that displays and works on all of our platforms (no widgets on TV).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lets commit and then <a href="https://alancfrancis.com/2023/06/24/once-and-only-once-part-3-loose-ends/">move on to Part 3</a>.</p>
+<p><!-- /wp:paragraph --></p>

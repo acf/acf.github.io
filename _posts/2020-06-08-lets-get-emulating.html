@@ -1,0 +1,271 @@
+---
+layout: post
+title: Let's Get Emulating!
+date: 2020-06-08 09:14:34.000000000 +01:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  timeline_notification: '1591607678'
+  _publicize_job_id: '45208454927'
+  _thumbnail_id: '1501'
+  _last_editor_used_jetpack: block-editor
+author: Alan Francis
+permalink: "/2020/06/08/lets-get-emulating/"
+---
+<p><!-- wp:paragraph --></p>
+<p>So to get started playing with an Amiga the easiest thing to do is install an Emulator.  The UAE Emulator is available for all kinds of platforms.  You can even run it on a Raspberry Pi, I use a Mac, so that's what I'm going to talk about here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>FS-UAE</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>You'll want to head to <a rel="noreferrer noopener" href="https://fs-uae.net" target="_blank">https://fs-uae.net</a> and click on the "latest version"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":882,"width":579,"height":525,"sizeSlug":"large","ampLightbox":true} --></p>
+<figure class="wp-block-image size-large is-resized"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-03-at-21.05.36.png?w=1024" alt="" class="wp-image-882" width="579" height="525" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The  choose the recommended download.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":883,"sizeSlug":"large","ampLightbox":true} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-03-at-21.07.05.png?w=970" alt="" class="wp-image-883" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Drag the FA-UAE icons to the Applications shortcut and you're done.  You can close and delete the DMG.   I haven't used the arcade app.  I assume its for games and I don't much care about them so you can probably save a few Mb by just copying the launcher.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":885,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-03-at-21.10.38.png?w=778" alt="" class="wp-image-885" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2>Kickstart and Workbench</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Amiga stored a bunch of its operating system on ROMs inside the machine called Kickstart.  This allowed the OS to load up from an 880K floppy disk because lots of what was required didn't need to be on the disk.  Workbench is windowing UI for the Amiga.  Both the ROMs and software are proprietary and if you don't have a real Amiga you can use, you'll need to buy them somewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The last "official" version of the Kickstart/Workbench was 3.1 back in the early 90s and this version can still be purchased <a href="https://www.amigaforever.com" target="_blank" rel="noreferrer noopener">via Cloanto on the AmigaForever CD</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>More recently a team of volunteers has been updating that classic Software and released first 3.1.4 and now 3.2.  This updated Kickstart/ROM combination can be purchased via <a href="https://www.hyperion-entertainment.com">Hyperion Entertainment</a>.  The rest of this tutorial assumed 3.1 from AmigaForever for simplicity.  3.1.4 is almost identical except for an extra disk, 3.2 is distributed on CD and is more complicated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Either way, you should end up with the following files available to you somehow.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":889,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-03-at-21.30.30.png?w=818" alt="" class="wp-image-889" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2>Lets Build an Amiga1200</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK.  We have our emulator, and we have our Kickstart ROM image and we have 6 floppies that represent the Workbench disks.  Lets make a machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Start up FS-UAE</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":897,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-07-at-22.30.44.png?w=1024" alt="" class="wp-image-897" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thing we're going to do is import the Kickstart ROM.  Whether you just have the 3.1 ROM I mentioned above or you bought the AmigaForever DVD with a bunch of ROMs, we can click that blue square in the top left and choose "Import Kickstarts".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Navigate to the parent folder of the ROM files and click import.  You should see something like this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":898,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-07-at-22.34.42.png?w=1024" alt="" class="wp-image-898" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my case, its just a single ROM for the A1200, you may have ROMs for other machines too.  Close the windows so you are back at the main screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I still haven't figured out what the dark grey strip at the bottom is for.  I've never seen anything useful in it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK, lets make an A1200.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":899,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-07-at-22.36.52.png?w=1024" alt="" class="wp-image-899" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Go to the text field where it currently says "Unnamed Configuration" and change that to "A1200".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":900,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-07-at-22.37.51.png?w=1024" alt="" class="wp-image-900" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Move up and right to the Amiga Model where we'll switch the first combo to A1200 and the second to "3.1 ROM, 68020 CPU".  Dont be tempted by the accelerators as they need their own ROMs which we haven't downloaded yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We're going to move along the icons on the top bar, setting where we need to.  We've been on the "Home" icon, lets move to the floppy icon.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":901,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-07-at-22.40.33.png?w=1024" alt="" class="wp-image-901" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We're going to set Drive Count to 4.  This pretends we have 4 floppy drives attached to the amiga and will make out workbench installation a little easier.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For each of the four disk drives, use the document icon at the right to choose one of the workbench 3.1 ADF files we downloaded earlier.  Ensure the first drive contains the Install disk, then add Workbench, Extras and Locale to the other three.  This simulates those four disks in those four drives when the machine boots.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":917,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.58.37.png?w=1024" alt="" class="wp-image-917" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now, in order to be able to "fake insert" other floppies while the system is running, we need to tell FS-UAE in advance that we're going to need them.  We do that by adding the ADF files to the Media Swap List below.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the "Media Swap List" section, add *all* the floppies, even the ones we already picked.  I found out the hard way if you eject one of them you can't reinsert unless its in the swap list.  Order is not important, but hit the + button and add all of the ADF files.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":904,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-07-at-22.46.55.png?w=1024" alt="" class="wp-image-904" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know what the save disk is, I've never used it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can skip the CD-ROM tab for now.  The next section is Hard Drives.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>FS-UAE supports a few different hard drive types, but by far the easiest is a "folder".  Here we tell FS-AUE to use a folder (by default created in ~/Documents/FS-USE/Hard Drives/...) as a hard disk.  This is super flexible as it allows us to drag and drop files to and from the amiga using the Finder.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the first entry, select the folder icon to the right.  That will open a File dialog in the right place.  Hit new folder and call our new folder "System3..1".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":907,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.25.09.png?w=1024" alt="" class="wp-image-907" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>WHDLoad is a system for loading floppy based games from the hard disk, and we'll ignore that for now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next tab is for memory.  To mimic a maxed out A1200 from 1994 we'll select 2Mb of on-board "chip" RAM that the custom chips can access, and 8Mb of Fast RAM that we would have installed in the trapdoor expansion slot.  If we were pretending to be a desktop amiga we could add motherboard ram, and if we had ROMs for an accelerator we could add more there, but for now its a stock A1200 + expansion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":908,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.28.18.png?w=1024" alt="" class="wp-image-908" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll disable the joystick, otherwise FS-UAE steals our cursor keys to use as a fake joystick.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":932,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.17.23.png?w=1024" alt="" class="wp-image-932" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The expansion card tab stays empty.  On the last tab, the one concession we'll make for modernity is to up the "Floppy Drive Speed" to Turbo so we're not waiting for the fake floppy to read at real floppy speeds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that, we're done.   We can save the configuration  we made by pressing the little red arrow over on the left.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":909,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.32.01.png?w=958" alt="" class="wp-image-909" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And that's it!  We have a fully configured Amiga with a Hard Disk, and 6 floppy disks, 4 of which are sitting in drives, with the install disk in the first drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Lets Install Workbench!</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>We boot the amiga using this Start button in the lower right.  The button beside it toggles from Window to Full screen.  The mouse capture is a little funky and its super hard to move the window around once it exists, but for now we'll leave it windowed so we can Cmd-Tab out of the emulator and leave it visible if we need to.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":910,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.34.27.png?w=642" alt="" class="wp-image-910" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Click the start button and enjoy your Amiga's Fancy Hi Res display!  It's booting from the Install floppy, but thanks to out sped up floppy drive speed it should happen pretty quickly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":912,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.37.18.png?w=1024" alt="" class="wp-image-912" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>You can see the four floppies, plus the System3.1 Hard Disk (with a wrong icon) and the RAM disk, a fake drive that Amiga creates for us to store scratch files.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Double Click on the Install3.1 disk, the Install folder, and then the English installer (other languages are available so feel free to go your own way).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":913,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.41.45.png?w=968" alt="" class="wp-image-913" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll click Proceed, and then "Install Release 3.1", You can choose a different installation mode if you're curious but just going with Novice gets us there with the minimum of fuss.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I chose English for the language and did not bother with any printer drivers, and the British keymap.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":914,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-09.44.48.png?w=948" alt="" class="wp-image-914" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And we're off!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At some point you'll see a dialog like this, which means its time to swap a floppy.  (6 disks, 4 drives).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":918,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.01.24.png?w=964" alt="" class="wp-image-918" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We access the magic menu for this using F12.  On a Mac keyboard you may need to use the Fn key to make F12 be something other than volume.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When you hit F12 you'll see this.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":919,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.02.12.png?w=1024" alt="" class="wp-image-919" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once this menu is open we need to use the cursor keys to navigate up and  down.  Lets go down to extras and hit return.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":920,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.03.11.png?w=1024" alt="" class="wp-image-920" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can just eject the disk, or replace it with another from our "Media Swap List".   Lets go down and select  Fonts.  The menu disappears and if you give the Amiga a second it will recognise the new disk and resume without you clicking proceed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":921,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.04.43.png?w=952" alt="" class="wp-image-921" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Same again, F12, cursor down to Fonts, hit return, select the storage floppy and let the Installer continue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":922,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.05.57.png?w=994" alt="" class="wp-image-922" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And we're done!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hit F12, cursor down and select the Install disk, and Eject.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":923,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.07.14.png?w=808" alt="" class="wp-image-923" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Click Proceed to reboot the Amiga from the hard disk!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":925,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.10.01.png?w=1024" alt="" class="wp-image-925" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Behold your new Amiga!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One last cleanup step.  Cmd-Tab to the launcher app and go to the floppies tab.  We want to eject all the floppies here and use the little yellow button to clear the media swap list.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":926,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.12.05.png?w=1024" alt="" class="wp-image-926" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":927,"sizeSlug":"large","className":"is-style-default"} --></p>
+<figure class="wp-block-image size-large is-style-default"><img src="{{ site.baseurl }}/assets/2020/06/screenshot-2020-06-08-at-10.12.56.png?w=616" alt="" class="wp-image-927" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now when we next boot the Amiga,  we'll have our hard disk and no floppies around to confuse us.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the next post we'll talk about adding a second Hard Disk, a C compiler and the system headers for building Amiga programs!</p>
+<p><!-- /wp:paragraph --></p>
