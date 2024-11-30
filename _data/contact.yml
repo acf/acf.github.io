@@ -1,12 +1,8 @@
 #  The contact options.
 
-- type: twitter
+- type: notwitter
   icon: "fa-brands fa-x-twitter"
   url: 'https://ethical.net/networking/twitter-alternatives-guide/'
-
-- type: email
-  icon: "fas fa-envelope"
-  noblank: true # open link in current tab
 
 - type: rss
   icon: "fas fa-rss"
