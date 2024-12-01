@@ -1,8 +1,7 @@
 ---
 layout: post
 title: 'Here we are again'
-author: 
-  name: Alan Francis
+author: Alan Francis
 ---
 
 Here we are again.
